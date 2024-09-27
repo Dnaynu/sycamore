@@ -8,6 +8,7 @@ Modifications Copyright Aryn Inc.
 from collections import OrderedDict, defaultdict
 from typing import Optional
 import xml.etree.ElementTree as ET
+import os
 
 import numpy as np
 import pandas as pd
@@ -753,7 +754,22 @@ def objects_to_structures(objects, tokens, class_thresholds):
 
     tables = [obj for obj in objects if obj["label"] == "table"]
 
-    assert len(tables) <= 1
+    import logging
+    logging.info("ALIVE <<<<<<<")
+    message = f"len(tables) <= 1. Tables = "
+    for table in tables:
+        message += f"{table}\t"
+    message += "\n"
+
+    if len(tables) > 1:
+        with open("/tmp/mark-table", "a+") as f:
+            f.write(message)
+            print("message: ", message)
+
+    assert len(tables) <= 1, message
+
+    os.sync()
+
     if len(tables) == 0:
         return {}
 
